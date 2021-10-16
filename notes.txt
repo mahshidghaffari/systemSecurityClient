@@ -1,0 +1,70 @@
+after building project 
+
+for axios (servis ) in case if it didn't initial at the bulding stage
+
+	1 - mkdir services
+	2 - touch index.js
+	3 - touch get.service.js
+	4 - touch post_put.service.js
+	
+	-------------------------- index.js
+	
+	import axios from "axios";
+
+	//make the URL universal [to do]
+	// axios.defaults.baseURL = process.env.VUE_APP_URL_API;
+
+	import  {getService}  from "./get.service"
+	import {pService} from "./post_put.service "
+
+
+
+	export const service = ({
+	  modules: {
+	    getService,
+	    pService
+	  }
+	});
+
+  	---------------------------------------------get.servise.js
+  	const getService_one = {
+
+	}
+
+	const getService_two = {
+
+	}
+
+	export const getService = {
+	    namespaced: true,
+	    getService_one,
+	    getService_two
+	}
+	
+	
+	------------------------------------------------post_put.service.js
+	
+		const pService_one = {
+
+		}
+
+		const pService_two = {
+
+		}
+
+		export const pService = {
+		    namespaced: true,
+		    pService_one,
+		    pService_two
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
