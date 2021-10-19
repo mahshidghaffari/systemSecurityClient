@@ -58,9 +58,93 @@ for axios (servis ) in case if it didn't initial at the bulding stage
 		    pService_two
 		}
 		
-		
-		
-		
+________________________________________________________________________ setting up store
+
+	1- mkdir index.js
+	2- touch first.module.js
+	3- touch second.module.js
+	-----------------------------------------index.js
+	
+
+	import  {firstModule}  from "./first.module"
+	import  {secondModule}  from "./second.module"
+
+	import {} from "./Order.module"
+
+	Vue.use(Vuex)
+
+
+	export const store = new Vuex.Store({
+	  modules: {
+	    firstModule,
+	    secondModule
+	  }
+	});
+
+	------------------------------------------------first.module.js
+	
+	// import { services } from "../Services/Services";
+	const state = {
+	    desertList: [],
+	}
+
+	const mutations = {
+
+	    // getPizzaSuccess(state, data) {
+		// state.pizzaList = data.data
+	    // },
+	}
+
+	// dispatch action
+	const actions = {
+	    // getPizza({ commit }) {
+	    //     services.getPizza()
+	    //         .then(response => {
+	    //             commit('getPizzaSuccess', response.data)
+	    //         }, error => {
+	    //             console.log(error)
+	    //         }
+
+	    //         )
+	    // },
+
+	}
+
+
+	export const firstModule  = {
+	    namespaced: true,
+	    state,
+	    mutations,
+	    actions
+	}
+			
+________________________________________________add bootstrap 
+
+in src directory run :  
+npm i bootstrap-vue
+
+* refresh the folder project 
+	check for the ok instalation: ! when u serch boostrap in the project you should be 		able to see in package.lock.json and package.json
+	
+next Step: 
+
+add below in  in the the main.js
+
+	import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
+
+	import "bootstrap/dist/css/bootstrap.css";
+	import "bootstrap-vue/dist/bootstrap-vue.css";
+
+	// // Make BootstrapVue available throughout your project
+	Vue.use(BootstrapVue);
+
+	// Optionally install the BootstrapVue icon components plugin
+	Vue.use(IconsPlugin);
+	
+test :     <b-button variant="danger">Button</b-button>
+
+easyyyyyyyyyyyyyyyy :)
+________________________________________________
 		
 		
 		

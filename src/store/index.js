@@ -1,17 +1,14 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 
-import  {firstModule}  from "./first.module"
-import  {secondModule}  from "./second.module"
+import { firstModule } from "./first.module";
+import { secondModule } from "./second.module";
 
-
-Vue.use(Vuex)
-
+Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   modules: {
     firstModule,
-    secondModule
-  }
+    secondModule,
+  },
 });
-

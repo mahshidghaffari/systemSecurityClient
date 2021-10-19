@@ -1,25 +1,17 @@
 // import { services } from "../Services/Services";
 
-
-
 const state = {
-    desertList: [],
-}
+  desertList: [],
+};
 
-const mutations = {
-
-}
+const mutations = {};
 
 // dispatch action
-const actions = {
+const actions = {};
 
-
-}
-
-
-export const secondModule  = {
-    namespaced: true,
-    state,
-    mutations,
-    actions
-}
+export const secondModule = {
+  namespaced: true,
+  state,
+  mutations,
+  actions,
+};
