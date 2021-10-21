@@ -80,6 +80,15 @@ ________________________________________________________________________ setting
 	    secondModule
 	  }
 	});
+	
+	-----------------------------------------------------main.js
+	import { store } from "./store";   // in hatman baya {} in bashe vagran errore state undefine mide
+	
+	new Vue({
+	  router,
+	  store,
+	  render: (h) => h(App),
+	}).$mount("#app");
 
 	------------------------------------------------first.module.js
 	
@@ -118,6 +127,8 @@ ________________________________________________________________________ setting
 	    actions
 	}
 			
+			
+	
 ________________________________________________add bootstrap 
 
 in src directory run :  
@@ -144,7 +155,27 @@ add below in  in the the main.js
 test :     <b-button variant="danger">Button</b-button>
 
 easyyyyyyyyyyyyyyyy :)
-________________________________________________
+________________________________________________adding fav icon
+	in the src dir
+Install the core package and icon content.
+
+	$ npm i --save @fortawesome/fontawesome-svg-core
+	$ npm i --save @fortawesome/free-solid-svg-icons
+Using Vue 2.x
+
+	$ npm i --save @fortawesome/vue-fontawesome@latest
+		
+Import in main.js
+
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
+library.add(fas);
+Vue.component('font-awesome-icon',FontAwesomeIcon);
+
+
+test:  <font-awesome-icon :icon="['fas', 'robot']" />
 		
 		
 		

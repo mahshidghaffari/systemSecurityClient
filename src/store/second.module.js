@@ -1,7 +1,9 @@
 // import { services } from "../Services/Services";
+// import { router } from "../router/index";
+// import { axios } from "axios";
 
 const state = {
-  desertList: [],
+  test: "dfsdfsdf",
 };
 
 const mutations = {};

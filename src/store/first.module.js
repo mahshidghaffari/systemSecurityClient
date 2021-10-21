@@ -1,26 +1,13 @@
 // import { services } from "../Services/Services";
+
 const state = {
-  desertList: [],
+  test: "test",
 };
 
-const mutations = {
-  // getPizzaSuccess(state, data) {
-  // state.pizzaList = data.data
-  // },
-};
+const mutations = {};
 
 // dispatch action
-const actions = {
-  // getPizza({ commit }) {
-  //     services.getPizza()
-  //         .then(response => {
-  //             commit('getPizzaSuccess', response.data)
-  //         }, error => {
-  //             console.log(error)
-  //         }
-  //         )
-  // },
-};
+const actions = {};
 
 export const firstModule = {
   namespaced: true,
