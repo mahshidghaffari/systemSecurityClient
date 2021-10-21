@@ -22,12 +22,15 @@
       <section>
         <h2>What it can be offer in here</h2>
         <div class="row">
-          <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+          <div
+            class="col-lg-3 col-md-6 mb-5 mb-lg-0"
+            v-for="(offer, index) in offers"
+            :key="index"
+          >
             <div class="icon mx-auto">
-              <!-- <i class="fas" :class="offer.icon"></i> -->
-              <!-- <h4>{{ offer.title }}</h4> -->
-              <!-- <span>{{ offer.desc }}</span> -->
-              {{ test }}
+              <font-awesome-icon :icon="['fas', offer.icon]" class="icon" />
+              <h4>{{ offer.title }}</h4>
+              <span>{{ offer.desc }}</span>
             </div>
           </div>
         </div>
@@ -43,7 +46,7 @@ import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState("firstModule", ["test"]),
+    ...mapState("firstModule", ["offers"]),
   },
 };
 </script>
@@ -109,5 +112,35 @@ article {
   display: block;
   padding-bottom: 30px;
   font-size: 1.25rem;
+}
+
+.blue-section {
+  padding: 120px 10px;
+  background-color: #1d809f;
+  color: #fff;
+  text-align: center;
+}
+
+.blue-section h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 50px;
+}
+
+.blue-section h4 {
+  font-size: 1.6rem;
+  padding-bottom: 20px;
+}
+
+.blue-section .icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
+  background-color: #fff;
+  color: #1d809f;
+  border-radius: 50%;
+  font-size: 2rem;
 }
 </style>
