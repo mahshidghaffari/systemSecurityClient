@@ -1,39 +1,30 @@
 // import { services } from "../Services/Services";
+import axios from "axios";
+import { services } from "@/services";
+axios.defaults.baseURL = 'http://localhost:5000/';
 
-const state = {
-  test: "test",
-  offers: [
-    {
-      icon: "user",
-      title: "Mobile design",
-      desc: "looks grate on my screen size",
-    },
-    {
-      icon: "fighter-jet",
-      title: "Mobile design",
-      desc: "looks grate on my screen size",
-    },
-    {
-      icon: "thumbs-up",
-      title: "Mobile design",
-      desc: "looks grate on my screen size",
-    },
-    {
-      icon: "question-circle",
-      title: "Mobile design",
-      desc: "looks grate on my screen size",
-    },
-  ],
-};
+const state = {};
 
 const mutations = {};
 
 // dispatch action
-const actions = {};
+const actions = {
+  getInitial() {
+    console.log("yo.");
+    services.getInitial()
+      .then(response => {
+        console.log(response);
+        }, error => {
+          console.log(error)
+        }
+
+      )
+  },
+};
 
 export const firstModule = {
   namespaced: true,
   state,
   mutations,
-  actions,
+  actions
 };

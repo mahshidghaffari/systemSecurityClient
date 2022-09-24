@@ -1,146 +1,135 @@
 <template>
-  <div class="container-fluid px-0">
-    <article class="main-img" align-self="center">
-      <section class="align-self-center">
-        <h1>Stylish portolio</h1>
-        <span>a vue bootstrap sampmle one </span>
-        <button class="btn btn-xl btn-light">Find Out More</button>
-      </section>
-    </article>
-    <article id="find-more" class="white-section">
-      <section>
-        <h3>This is stylish portolio and Also sample One</h3>
-        <span
-          >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris quis
-          libero est. In hac habitasse platea dictumst. Sed eu mi nulla.</span
-        >
-        <button class="btn btn-xl btn-dark">What We Offer</button>
-      </section>
-    </article>
-
-    <article id="offers" class="blue-section">
-      <section>
-        <h2>What it can be offer in here</h2>
+  <div class="container-fluid px-0 main-img">
+    <div class="login-page wallpaper-login">
+      <div class="container ">
         <div class="row">
-          <div
-            class="col-lg-3 col-md-6 mb-5 mb-lg-0"
-            v-for="(offer, index) in offers"
-            :key="index"
-          >
-            <div class="icon mx-auto">
-              <font-awesome-icon :icon="['fas', offer.icon]" class="icon" />
-              <h4>{{ offer.title }}</h4>
-              <span>{{ offer.desc }}</span>
+          <div class="col-lg-4 col-md-6 col-sm-8 mx-auto">
+            <div class="card login">
+              <h1>Sign In</h1>
+              <form class="form-group">
+                <input v-model="userInfo.username"  class="form-control mb-4" placeholder="Username" required>
+                <input v-model="userInfo.password" class="form-control mb-4" placeholder="Password" required>
+                <input v-model="userInfo.delay" type="number" class="form-control mb-4" placeholder="delay time" required>
+                <input v-model="steps" class="form-control mb-4" placeholder="actions" required>
+                <v-btn type="submit" class="btn btn-primary" @click="login">submit</v-btn>
+              </form>
             </div>
           </div>
         </div>
-      </section>
-    </article>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 // import HelloWorld from "@/components/HelloWorld.vue";
-import { mapState } from "vuex";
+
+import { mapState, mapActions } from "vuex";
+
 
 export default {
+  data: () => ({
+    userInfo: {
+      username: '',
+      password: '',
+      delay: null,
+      actions:[]
+    },
+    username: null,
+    password: null,
+    steps: ""
+
+  }),
   computed: {
-    ...mapState("firstModule", ["offers"]),
+    ...mapState("firstModule", ["offers"])
   },
+  methods: {
+    ...mapActions({
+      getInitial: "firstModule/" + ["getInitial"]
+    }),
+
+    splitor(str) {
+      return str.split(",");
+    },
+    login() {
+      console.log();
+      this.userInfo.actions = this.splitor(this.steps);
+      // this.postLogin(this.userInfo);
+      this.getInitial()
+    }
+  }
 };
 </script>
 
 <style scoped>
-article {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  width: 100%;
-  padding: 0 10px;
+p {
+  line-height: 1rem;
 }
 
-.btn-xl {
-  padding: 20px 35px;
-  font-family: serif;
-  font-size: 1.25rem;
+.card {
+  padding: 20px;
 }
 
-.main-img,
-.second-img {
-  min-height: 100vh;
-  background-size: cover !important;
-  padding: 0 10px;
-  text-align: center;
-}
-
-.main-img h1,
-.second-img h1 {
-  font-size: 5rem;
-  font-weight: bold;
-  margin-bottom: 30px;
-}
-
-.main-img span,
-.second-img span {
-  display: block;
-  padding-bottom: 30px;
-  font-size: 1.6rem;
-  font-weight: bold;
-}
-
-.main-img {
-  background: url("../assets/bg-first.jpg") center center;
-}
-
-.second-img {
-  background: url("../assets/bg-first.jpg") center center;
-}
-
-.white-section {
-  padding: 120px 10px;
-  background-color: #fff;
-  text-align: center;
-}
-
-.white-section h3 {
-  font-size: 2rem;
-  font-weight: bold;
-}
-
-.white-section span {
-  display: block;
-  padding-bottom: 30px;
-  font-size: 1.25rem;
-}
-
-.blue-section {
-  padding: 120px 10px;
-  background-color: #1d809f;
-  color: #fff;
-  text-align: center;
-}
-
-.blue-section h2 {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 50px;
-}
-
-.blue-section h4 {
-  font-size: 1.6rem;
-  padding-bottom: 20px;
-}
-
-.blue-section .icon {
-  display: flex;
-  justify-content: center;
+.login-page {
   align-items: center;
-  width: 120px;
-  height: 120px;
-  background-color: #fff;
-  color: #1d809f;
-  border-radius: 50%;
-  font-size: 2rem;
+  display: flex;
+  height: 100vh;
 }
+
+.wallpaper-login {
+  background: url("../assets/main-bg.jpg");
+  no-repeat: center center;
+  background-size: cover;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.wallpaper-register {
+  background: url(https://images.pexels.com/photos/533671/pexels-photo-533671.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260) no-repeat center center;
+  background-size: cover;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  z-index: -1;
+}
+
+h1 {
+  margin-bottom: 1.5rem;
+}
+
+.error {
+  animation-name: errorShake;
+  animation-duration: 0.3s;
+}
+
+@keyframes errorShake {
+  0% {
+    transform: translateX(-25px);
+  }
+  25% {
+    transform: translateX(25px);
+  }
+  50% {
+    transform: translateX(-25px);
+  }
+  75% {
+    transform: translateX(25px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
 </style>
