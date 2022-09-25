@@ -5,12 +5,24 @@ axios.defaults.baseURL = process.env.VUE_APP_URL_API;
 
 
 export const services = {
-getInitial}
+  getInitial,
+  login
+};
 
-function getInitial(){
+function getInitial() {
   return axios({
     method: "get",
     url: "/",
-    changeOrigin: true,
-  })
+    changeOrigin: true
+  });
+}
+
+function login(userInfo) {
+  console.log("servixe",userInfo);
+  // return axios({
+  //   method:"post",
+  //   url:"/",
+  //   changeOrigin: true,
+  //   data: UserInfo
+  // })
 }
