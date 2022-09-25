@@ -1,18 +1,43 @@
 <template>
   <div class="container-fluid px-0 main-img">
+
     <div class="login-page wallpaper-login">
+
       <div class="container ">
         <div class="row">
+          <b-alert show v-if="successAlert" variant="success" class="w-100">
+            {{errorMsg}}
+            <button type="button" class="close" aria-label="Close" @click="successAlert=!successAlert">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </b-alert>
+        </div>
+        <div class="row">
+          <b-alert class="w-100 alert-dismissible" show v-if="failAlert" variant="danger">
+            {{errorMsg}}
+            <button type="button" class="close" aria-label="Close" @click="failAlert=!failAlert">
+              <span aria-hidden="true">&times;</span>
+            </button></b-alert>
+        </div>
+
+        <div class="row" >
           <div class="col-lg-4 col-md-6 col-sm-8 mx-auto">
             <div class="card login">
               <h1>Sign In</h1>
-              <form class="form-group">
-                <input v-model="userInfo.username"  class="form-control mb-4" placeholder="Username" required>
-                <input v-model="userInfo.password" class="form-control mb-4" placeholder="Password" required>
-                <input v-model="userInfo.delay" type="number" class="form-control mb-4" placeholder="delay time" required>
-                <input v-model="steps" class="form-control mb-4" placeholder="actions" required>
-                <v-btn type="submit" class="btn btn-primary" @click="login">submit</v-btn>
-              </form>
+              <input v-model="userInfo.id" class="form-control mb-4" placeholder="Username" required>
+              <input v-model="userInfo.password" class="form-control mb-4" placeholder="Password" required>
+              <input v-model="userInfo.actions.delay" type="number" class="form-control mb-4" placeholder="delay time"
+                     required>
+              <input v-model="steps" class="form-control mb-1" placeholder="actions:" required>
+              <small class="mb-4 text-left text-secondary">Separate each action by " , ". ex:2,3,5</small>
+              <button class="btn btn-primary" @click="login">Log in</button>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-sm-8 mx-auto">
+            <div class="card login">
+              <h1>Log out</h1>
+              <input v-model="userInfo.id" class="form-control mb-4" placeholder="Username" required>
+              <button class="btn btn-primary" @click="logout">Log out</button>
             </div>
           </div>
         </div>
@@ -22,41 +47,87 @@
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from "@/components/HelloWorld.vue";
+import axios from "axios";
 
-import { mapState, mapActions } from "vuex";
-
+axios.defaults.baseURL = "http://localhost:5000/";
 
 export default {
   data: () => ({
+    steps :'',
+    loginModal: true,
+    logoutModal: false,
+    successAlert: false,
+    failAlert: false,
+    errorMsg: '',
+    successMsg: "Success Alert",
     userInfo: {
-      username: '',
-      password: '',
-      delay: null,
-      actions:[]
-    },
-    username: null,
-    password: null,
-    steps: ""
-
+      id: "",
+      password: "",
+      server: {
+        ip: "127.0.0.1",
+        port: "5000"
+      },
+      actions: {
+        delay: "",
+        steps: []
+      }
+    }
   }),
-  computed: {
-    ...mapState("firstModule", ["offers"])
-  },
+  computed: {},
   methods: {
-    ...mapActions({
-      getInitial: "firstModule/" + ["getInitial"]
-    }),
 
-    splitor(str) {
-      return str.split(",");
-    },
+
     login() {
-      console.log();
-      this.userInfo.actions = this.splitor(this.steps);
-      // this.postLogin(this.userInfo);
-      this.getInitial()
+      this.userInfo.actions.steps = this.steps.split(",");
+      console.log(this.userInfo);
+      return axios({
+        method: "post",
+        url: "/",
+        changeOrigin: true,
+        data: this.userInfo
+      }).then((response) => {
+        console.log(response);
+        if (response.data.category === "Fail") {
+          this.successAlert = false;
+          this.failAlert = true;
+          this.errorMsg = response.data.message;
+        }else if(response.data.category === "Success"){
+          this.errorMsg = response.data.message
+          this.successAlert =true;
+          this.loginModal = false;
+          this.logoutModal = true;
+        }
+      })
+        .catch(() => {
+          this.successAlert = false;
+          this.failAlert = true;
+          this.errorMsg = "server Error- Bad request";
+        });
+    },
+    logout(){
+      return axios({
+        method: "get",
+        url: "/logout/"+this.userInfo.id,
+        changeOrigin: true,
+      }).then((response) => {
+        console.log(response.data.message);
+        if (response.data.category === "Fail") {
+          this.successAlert = false;
+          this.failAlert = true;
+          this.errorMsg = response.data.message;
+        }else if(response.data.category === "Success"){
+          this.errorMsg = response.data.message
+          this.successAlert =true;
+          this.loginModal = false;
+          this.logoutModal = true;
+        }
+
+      })
+        .catch(() => {
+          this.successAlert = false;
+          this.failAlert = true;
+          this.errorMsg = "server Error - Bad request";
+        });
     }
   }
 };
@@ -96,14 +167,6 @@ p {
   opacity: 0;
 }
 
-.wallpaper-register {
-  background: url(https://images.pexels.com/photos/533671/pexels-photo-533671.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260) no-repeat center center;
-  background-size: cover;
-  height: 100%;
-  position: absolute;
-  width: 100%;
-  z-index: -1;
-}
 
 h1 {
   margin-bottom: 1.5rem;

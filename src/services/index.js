@@ -17,12 +17,11 @@ function getInitial() {
   });
 }
 
-function login(userInfo) {
-  console.log("servixe",userInfo);
-  // return axios({
-  //   method:"post",
-  //   url:"/",
-  //   changeOrigin: true,
-  //   data: UserInfo
-  // })
+function login(UserInfo) {
+  return axios({
+    method:"post",
+    url:"/",
+    changeOrigin: true,
+    data: UserInfo
+  })
 }
