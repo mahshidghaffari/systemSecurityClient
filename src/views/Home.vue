@@ -1,9 +1,7 @@
 <template>
   <div class="container-fluid px-0 main-img">
     <div class="login-page wallpaper-login">
-      <button type="button" class="close" aria-label="Close" @click="getTest()">
-        uououououo
-      </button>
+
       <div class="container ">
         <div class="row">
           <b-alert show v-if="successAlert" variant="success" class="w-100">
@@ -54,7 +52,7 @@
 <script>
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:5000/";
+axios.defaults.baseURL = "http://127.0.0.1:5000";
 
 export default {
   data: () => ({
@@ -67,8 +65,8 @@ export default {
       id: "",
       password: "",
       server: {
-        ip: "127.0.0.1",
-        port: "5000"
+        ip: "",
+        port: ""
       },
       actions: {
         delay: "",
@@ -144,15 +142,6 @@ export default {
         this.userInfoLogout.server.ip= data.match(ipRegex)[0];
       });
     },
-    getTest(){
-      return axios({
-        method: "get",
-        url: "/",
-      }).then((response) => {
-        console.log(response);
-      })
-
-    }
   },
   created() {
     this.getIP();
