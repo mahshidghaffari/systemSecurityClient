@@ -25,7 +25,7 @@
             <div class="card login">
               <h1>Sign In</h1>
               <input v-model="userInfo.id" class="form-control mb-4" placeholder="Username" required>
-              <input v-model="userInfo.password" class="form-control mb-4" placeholder="Password" required>
+              <input v-model="userInfo.password" class="form-control mb-4" type="password" placeholder="Password" required>
               <input v-model="userInfo.actions.delay" type="number" class="form-control mb-4" placeholder="delay time"
                      required>
               <input v-model="steps" class="form-control mb-1" placeholder="actions:" required>
@@ -37,6 +37,7 @@
             <div class="card login">
               <h1>Log out</h1>
               <input v-model="userInfo.id" class="form-control mb-4" placeholder="Username" required>
+              <input v-model="userInfo.password" class="form-control mb-4" placeholder="Password" required>
               <button class="btn btn-primary" @click="logout">Log out</button>
             </div>
           </div>
@@ -106,9 +107,10 @@ export default {
     },
     logout(){
       return axios({
-        method: "get",
-        url: "/logout/"+this.userInfo.id,
+        method: "post",
+        url: "/logout",
         changeOrigin: true,
+        data: this.userInfo
       }).then((response) => {
         console.log(response.data.message);
         if (response.data.category === "Fail") {
