@@ -1,12 +1,11 @@
 <template>
   <div class="container-fluid px-0 main-img">
-
     <div class="login-page wallpaper-login">
 
       <div class="container ">
         <div class="row">
           <b-alert show v-if="successAlert" variant="success" class="w-100">
-            {{errorMsg}}
+            {{ errorMsg }}
             <button type="button" class="close" aria-label="Close" @click="successAlert=!successAlert">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -14,19 +13,21 @@
         </div>
         <div class="row">
           <b-alert class="w-100 alert-dismissible" show v-if="failAlert" variant="danger">
-            {{errorMsg}}
+            {{ errorMsg }}
             <button type="button" class="close" aria-label="Close" @click="failAlert=!failAlert">
               <span aria-hidden="true">&times;</span>
-            </button></b-alert>
+            </button>
+          </b-alert>
         </div>
 
-        <div class="row" >
+        <div class="row">
           <div class="col-lg-4 col-md-6 col-sm-8 mx-auto">
             <div class="card login">
               <h1>Sign In</h1>
-              <input v-model="userInfo.id" class="form-control mb-4" placeholder="Username" required>
-              <input v-model="userInfo.password" class="form-control mb-4" type="password" placeholder="Password" required>
-              <input v-model="userInfo.actions.delay" type="number" class="form-control mb-4" placeholder="delay time"
+              <input v-model="userInfoLogin.id" class="form-control mb-4" placeholder="Username" required>
+              <input v-model="userInfoLogin.password" class="form-control mb-4" type="password" placeholder="Password"
+                     required>
+              <input v-model="userInfoLogin.actions.delay" type="number" class="form-control mb-4" placeholder="delay time"
                      required>
               <input v-model="steps" class="form-control mb-1" placeholder="actions:" required>
               <small class="mb-4 text-left text-secondary">Separate each action by " , ". ex:2,3,5</small>
@@ -36,8 +37,9 @@
           <div class="col-lg-4 col-md-6 col-sm-8 mx-auto">
             <div class="card login">
               <h1>Log out</h1>
-              <input v-model="userInfo.id" class="form-control mb-4" placeholder="Username" required>
-              <input v-model="userInfo.password" class="form-control mb-4" placeholder="Password" required type="password">
+              <input v-model="userInfoLogout.id" class="form-control mb-4" placeholder="Username" required>
+              <input v-model="userInfoLogout.password" class="form-control mb-4" placeholder="Password" required
+                     type="password">
               <button class="btn btn-primary" @click="logout">Log out</button>
             </div>
           </div>
@@ -54,14 +56,12 @@ axios.defaults.baseURL = "http://localhost:5000/";
 
 export default {
   data: () => ({
-    steps :'',
-    loginModal: true,
-    logoutModal: false,
+    steps: "",
     successAlert: false,
     failAlert: false,
-    errorMsg: '',
+    errorMsg: "",
     successMsg: "Success Alert",
-    userInfo: {
+    userInfoLogin: {
       id: "",
       password: "",
       server: {
@@ -72,31 +72,33 @@ export default {
         delay: "",
         steps: []
       }
+    },
+    userInfoLogout: {
+      id: "",
+      password: "",
+      server: {
+        ip: '',
+        port: ''
+      },
     }
   }),
   computed: {},
   methods: {
-
-
     login() {
-      this.userInfo.actions.steps = this.steps.split(",");
-      console.log(this.userInfo);
+      this.userInfoLogin.actions.steps = this.steps.split(",");
       return axios({
         method: "post",
         url: "/",
         changeOrigin: true,
-        data: this.userInfo
+        data: this.userInfoLogin
       }).then((response) => {
-        console.log(response);
         if (response.data.category === "Fail") {
           this.successAlert = false;
           this.failAlert = true;
           this.errorMsg = response.data.message;
-        }else if(response.data.category === "Success"){
-          this.errorMsg = response.data.message
-          this.successAlert =true;
-          this.loginModal = false;
-          this.logoutModal = true;
+        } else if (response.data.category === "Success") {
+          this.errorMsg = response.data.message;
+          this.successAlert = true;
         }
       })
         .catch(() => {
@@ -105,23 +107,20 @@ export default {
           this.errorMsg = "server Error- Bad request";
         });
     },
-    logout(){
+    logout() {
       return axios({
         method: "post",
         url: "/logout",
         changeOrigin: true,
-        data: this.userInfo
+        data: this.userInfoLogout
       }).then((response) => {
-        console.log(response.data.message);
         if (response.data.category === "Fail") {
           this.successAlert = false;
           this.failAlert = true;
           this.errorMsg = response.data.message;
-        }else if(response.data.category === "Success"){
-          this.errorMsg = response.data.message
-          this.successAlert =true;
-          this.loginModal = false;
-          this.logoutModal = true;
+        } else if (response.data.category === "Success") {
+          this.errorMsg = response.data.message;
+          this.successAlert = true;
         }
 
       })
@@ -130,7 +129,22 @@ export default {
           this.failAlert = true;
           this.errorMsg = "server Error - Bad request";
         });
-    }
+    },
+    text(url) {
+      return fetch(url).then(res => res.text());
+    },
+    getIP() {
+      this.userInfoLogin.server.port = window.location.protocol + "//" + window.location.host;
+      this.userInfoLogout.server.port = window.location.protocol + "//" + window.location.host;
+      this.text("https://www.cloudflare.com/cdn-cgi/trace").then(data => {
+        let ipRegex = /[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}/;
+        this.userInfoLogin.server.ip = data.match(ipRegex)[0];
+        this.userInfoLogout.server.ip= data.match(ipRegex)[0];
+      });
+    },
+  },
+  created() {
+    this.getIP();
   }
 };
 </script>
