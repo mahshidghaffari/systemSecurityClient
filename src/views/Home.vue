@@ -1,7 +1,9 @@
 <template>
   <div class="container-fluid px-0 main-img">
     <div class="login-page wallpaper-login">
-
+      <button type="button" class="close" aria-label="Close" @click="getTest()">
+        uououououo
+      </button>
       <div class="container ">
         <div class="row">
           <b-alert show v-if="successAlert" variant="success" class="w-100">
@@ -142,6 +144,15 @@ export default {
         this.userInfoLogout.server.ip= data.match(ipRegex)[0];
       });
     },
+    getTest(){
+      return axios({
+        method: "get",
+        url: "/",
+      }).then((response) => {
+        console.log(response);
+      })
+
+    }
   },
   created() {
     this.getIP();
