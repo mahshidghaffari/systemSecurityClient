@@ -114,27 +114,33 @@ export default {
       }
       },
     logout() {
-      return axios({
-        method: "post",
-        url: "/logout",
-        changeOrigin: true,
-        data: this.userInfoLogout
-      }).then((response) => {
-        if (response.data.category === "Fail") {
-          this.successAlert = false;
-          this.failAlert = true;
-          this.errorMsg = response.data.message;
-        } else if (response.data.category === "Success") {
-          this.errorMsg = response.data.message;
-          this.successAlert = true;
-        }
+      if(!this.userInfoLogout.id || !this.userInfoLogout.password || !this.userInfoLogout.server.ip || !this.userInfoLogout.server.port){
+        this.successAlert = false;
+        this.failAlert = true;
+        this.errorMsg = `One of the inputs are empty`;
+      }else {
+        return axios({
+          method: "post",
+          url: "/logout",
+          changeOrigin: true,
+          data: this.userInfoLogout
+        }).then((response) => {
+          if (response.data.category === "Fail") {
+            this.successAlert = false;
+            this.failAlert = true;
+            this.errorMsg = response.data.message;
+          } else if (response.data.category === "Success") {
+            this.errorMsg = response.data.message;
+            this.successAlert = true;
+          }
 
-      })
-        .catch(() => {
-          this.successAlert = false;
-          this.failAlert = true;
-          this.errorMsg = "server Error - Bad request";
-        });
+        })
+          .catch(() => {
+            this.successAlert = false;
+            this.failAlert = true;
+            this.errorMsg = "server Error - Bad request";
+          });
+      }
     },
     text(url) {
       return fetch(url).then(res => res.text());
