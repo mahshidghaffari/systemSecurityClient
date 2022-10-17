@@ -37,7 +37,7 @@
             <div class="card login">
               <h1>Log out</h1>
               <input v-model="userInfo.id" class="form-control mb-4" placeholder="Username" required>
-              <input v-model="userInfo.password" class="form-control mb-4" placeholder="Password" required>
+              <input v-model="userInfo.password" class="form-control mb-4" placeholder="Password" required type="password">
               <button class="btn btn-primary" @click="logout">Log out</button>
             </div>
           </div>
