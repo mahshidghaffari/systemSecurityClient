@@ -85,28 +85,34 @@ export default {
   computed: {},
   methods: {
     login() {
-      this.userInfoLogin.actions.steps = this.steps.split(",");
-      return axios({
-        method: "post",
-        url: "/",
-        changeOrigin: true,
-        data: this.userInfoLogin
-      }).then((response) => {
-        if (response.data.category === "Fail") {
-          this.successAlert = false;
-          this.failAlert = true;
-          this.errorMsg = response.data.message;
-        } else if (response.data.category === "Success") {
-          this.errorMsg = response.data.message;
-          this.successAlert = true;
-        }
-      })
-        .catch(() => {
-          this.successAlert = false;
-          this.failAlert = true;
-          this.errorMsg = "server Error- Bad request";
-        });
-    },
+      if(!this.userInfoLogin.id || !this.userInfoLogin.password || !this.userInfoLogin.server.ip || !this.userInfoLogin.server.port){
+        this.successAlert = false;
+        this.failAlert = true;
+        this.errorMsg = `One of the inputs are empty`;
+      }else {
+        this.userInfoLogin.actions.steps = this.steps.split(",");
+        return axios({
+          method: "post",
+          url: "/",
+          changeOrigin: true,
+          data: this.userInfoLogin
+        }).then((response) => {
+          if (response.data.category === "Fail") {
+            this.successAlert = false;
+            this.failAlert = true;
+            this.errorMsg = response.data.message;
+          } else if (response.data.category === "Success") {
+            this.errorMsg = response.data.message;
+            this.successAlert = true;
+          }
+        })
+          .catch(() => {
+            this.successAlert = false;
+            this.failAlert = true;
+            this.errorMsg = "server Error- Bad request";
+          });
+      }
+      },
     logout() {
       return axios({
         method: "post",
