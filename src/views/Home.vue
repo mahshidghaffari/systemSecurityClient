@@ -20,14 +20,24 @@
           </b-alert>
         </div>
 
+
+        {{showLoginPass}}
         <div class="row">
           <div class="col-lg-4 col-md-6 col-sm-8 mx-auto">
             <div class="card login">
               <h1>Sign In</h1>
               <input v-model="userInfoLogin.id" class="form-control mb-4" placeholder="Username" required>
-              <input v-model="userInfoLogin.password" class="form-control mb-4" type="password" placeholder="Password"
-                     required>
-              <input v-model="userInfoLogin.actions.delay" type="number" class="form-control mb-4" placeholder="delay time"
+              <b-input-group  class=" mb-4">
+                <b-form-input v-if="showLoginPass" v-model="userInfoLogin.password" placeholder="Password" type="text"></b-form-input>
+                <b-form-input v-else v-model="userInfoLogin.password" placeholder="Password" type="password"></b-form-input>
+                <b-input-group-append>
+                  <b-button variant="outline-primary" @click="showLoginPass = !showLoginPass">
+                    <b-icon icon="eye" font-scale="1"></b-icon>
+                  </b-button>
+                </b-input-group-append>
+              </b-input-group>
+              <input v-model="userInfoLogin.actions.delay" type="number" class="form-control mb-4"
+                     placeholder="delay time"
                      required>
               <input v-model="steps" class="form-control mb-1" placeholder="actions:" required>
               <small class="mb-4 text-left text-secondary">Separate each action by " , ". ex:2,3,5</small>
@@ -38,8 +48,15 @@
             <div class="card login">
               <h1>Log out</h1>
               <input v-model="userInfoLogout.id" class="form-control mb-4" placeholder="Username" required>
-              <input v-model="userInfoLogout.password" class="form-control mb-4" placeholder="Password" required
-                     type="password">
+              <b-input-group  class=" mb-4">
+                <b-form-input v-if="showLogoutPass" v-model="userInfoLogout.password" placeholder="Password" type="text"></b-form-input>
+                <b-form-input v-else v-model="userInfoLogout.password" placeholder="Password" type="password"></b-form-input>
+                <b-input-group-append>
+                  <b-button variant="outline-primary" @click="showLogoutPass = !showLogoutPass">
+                    <b-icon icon="eye" font-scale="1"></b-icon>
+                  </b-button>
+                </b-input-group-append>
+              </b-input-group>
               <button class="btn btn-primary" @click="logout">Log out</button>
             </div>
           </div>
@@ -77,19 +94,21 @@ export default {
       id: "",
       password: "",
       server: {
-        ip: '',
-        port: ''
-      },
-    }
+        ip: "",
+        port: ""
+      }
+    },
+    showLoginPass: false,
+    showLogoutPass:false
   }),
   computed: {},
   methods: {
     login() {
-      if(!this.userInfoLogin.id || !this.userInfoLogin.password || !this.userInfoLogin.server.ip || !this.userInfoLogin.server.port){
+      if (!this.userInfoLogin.id || !this.userInfoLogin.password || !this.userInfoLogin.server.ip || !this.userInfoLogin.server.port) {
         this.successAlert = false;
         this.failAlert = true;
         this.errorMsg = `One of the inputs are empty`;
-      }else {
+      } else {
         this.userInfoLogin.actions.steps = this.steps.split(",");
         return axios({
           method: "post",
@@ -112,13 +131,13 @@ export default {
             this.errorMsg = "server Error- Bad request";
           });
       }
-      },
+    },
     logout() {
-      if(!this.userInfoLogout.id || !this.userInfoLogout.password || !this.userInfoLogout.server.ip || !this.userInfoLogout.server.port){
+      if (!this.userInfoLogout.id || !this.userInfoLogout.password || !this.userInfoLogout.server.ip || !this.userInfoLogout.server.port) {
         this.successAlert = false;
         this.failAlert = true;
         this.errorMsg = `One of the inputs are empty`;
-      }else {
+      } else {
         return axios({
           method: "post",
           url: "/logout",
@@ -151,9 +170,9 @@ export default {
       this.text("https://www.cloudflare.com/cdn-cgi/trace").then(data => {
         let ipRegex = /[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}/;
         this.userInfoLogin.server.ip = data.match(ipRegex)[0];
-        this.userInfoLogout.server.ip= data.match(ipRegex)[0];
+        this.userInfoLogout.server.ip = data.match(ipRegex)[0];
       });
-    },
+    }
   },
   created() {
     this.getIP();
